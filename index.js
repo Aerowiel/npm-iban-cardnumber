@@ -26,10 +26,23 @@ const luhnCheck = (cardNumberString) => {
 };
 
 const charToNumber = (char) =>{
-  
+  return char.charCodeAt(0) - 55
 }
 
+
 const ibanCheck = (input) => {
+
+  //replace any non-alphanumeric value,
+  const iban = String(input).toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+  //moves the first four characters to the end of the iban then split each characters into an array,
+  const iban2=`${iban.slice(4,iban.length)}${iban.slice(0,4)}`.split('');
+
+  //replace any NaN char with its char code,
+  const iban3 = iban2.map((c)=> isNaN(c) ? charToNumber(c) : c).join('');
+
+
+  return mod97(iban3);
   
 };
 
