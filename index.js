@@ -31,13 +31,13 @@ function mod97(string) {
   let checksum = string.slice(0, 2);
   let fragment = '';
   for (let offset = 2; offset < string.length; offset += 7) {
-    fragment = checksum + string.substring(offset, offset + 7);
+    fragment = `${checksum}${string.substring(offset, offset + 7)}`;
     checksum = parseInt(fragment, 10) % 97;
   }
   return checksum;
 }
 
-const ibanCheck = (input) => {
+const checkIbanValidity = (input) => {
   // replace any non-alphanumeric value,
   const cleanedIban = String(input).toUpperCase().replace(/[^A-Z0-9]/g, '');
 
@@ -52,19 +52,12 @@ const ibanCheck = (input) => {
 
 const checkCardNumberValidity = (cardNumber) => {
   const expectedSize = 16;
-  let cNumber = cardNumber;
-  cNumber = clearString(cardNumber);
-  const cNumberLength = cNumber.length;
-  if (cNumberLength !== expectedSize) {
-    return false;
-  }
-
-  return luhnCheck(cardNumber);
+  const cNumber = clearString(cardNumber);
+  return cNumber.length === expectedSize && luhnCheck(cardNumber);
 };
 
 module.exports = {
   checkCardNumberValidity,
-  luhnCheck,
-  ibanCheck,
+  checkIbanValidity,
 };
 
